@@ -1,12 +1,9 @@
 defmodule Backend do
-  use Application
-  def start(_type,_args) do
-    IO.puts(Backend.hello())
-    Supervisor.start_link([], strategy: :one_for_one)
-  end
+  @moduledoc """
+  Backend keeps the contexts that define your domain
+  and business logic.
 
-  def hello do
-    :world
-  end
-
+  Contexts are also responsible for managing your data, regardless
+  if it comes from the database, an external API or others.
+  """
 end

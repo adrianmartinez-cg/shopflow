@@ -50,6 +50,18 @@ defmodule BackendWeb do
     end
   end
 
+  def api_controller do
+    quote do
+      use Phoenix.Controller,
+        formats: [:json],
+        layouts: []
+
+      import Plug.Conn
+      import BackendWeb.Gettext
+      unquote(verified_routes())
+    end
+  end
+
   def live_view do
     quote do
       use Phoenix.LiveView,

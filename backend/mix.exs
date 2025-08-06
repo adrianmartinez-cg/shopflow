@@ -19,7 +19,7 @@ defmodule Backend.MixProject do
   def application do
     [
       mod: {Backend.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :plug]
     ]
   end
 
@@ -34,6 +34,8 @@ defmodule Backend.MixProject do
     [
       {:phoenix, "~> 1.7.21"},
       {:phoenix_ecto, "~> 4.5"},
+      {:bcrypt_elixir, "~> 3.0"},
+      {:cors_plug, "~> 1.5"},
       {:ecto_sql, "~> 3.10"},
       {:ecto_sqlite3, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},

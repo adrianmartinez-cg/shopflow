@@ -25,6 +25,13 @@ defmodule BackendWeb.Router do
   #   pipe_through :api
   # end
 
+  scope "/api", BackendWeb do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+    post "/register", UserController, :create
+  end
+
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:backend, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put

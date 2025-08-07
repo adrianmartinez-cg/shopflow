@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, type SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import toast from 'react-hot-toast';
 import { API_URL } from '../../constants/globals';
 import { VALIDATION_INVALID_FORMAT_MSG, VALIDATION_MIN_LENGTH_MSG, VALIDATION_MISMATCH_PASSWORDS, VALIDATION_REQUIRED_FIELD_MSG } from '../../constants/formValidation';
-import type { PhoenixError } from '../../constants/errors';
+import { SERVER_ERROR_MSG, type PhoenixError } from '../../constants/errors';
 
 const signupSchema = z.object({
   name: z.string().min(1, { message: VALIDATION_REQUIRED_FIELD_MSG }),
-  email: z.string().email({ message: VALIDATION_INVALID_FORMAT_MSG('email') }),
+  email: z.email({ message: VALIDATION_INVALID_FORMAT_MSG('email') }),
   password: z.string().min(8, { message: VALIDATION_MIN_LENGTH_MSG('password', 8) }),
   confirmPassword: z.string(),
 })
@@ -22,7 +22,6 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     handleSubmit,
@@ -40,7 +39,6 @@ const SignupPage = () => {
   });
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
-    setServerError(null);
     try {
       const payload = {
         user: {
@@ -59,6 +57,7 @@ const SignupPage = () => {
       });
 
       if (response.ok) {
+        toast.success('Account created successfully!');
         navigate('/');
       } else if (response.status === 422) {
         const errorData: { errors: PhoenixError } = await response.json();
@@ -70,10 +69,10 @@ const SignupPage = () => {
           });
         });
       } else {
-        setServerError('An unexpected error occurred. Please try again.');
+        toast.error(SERVER_ERROR_MSG);
       }
     } catch (error) {
-      setServerError('Failed to connect to the server. Please check your connection.');
+      toast.error(`Unexpected error: ${error}`);
     }
   };
 
@@ -142,13 +141,6 @@ const SignupPage = () => {
           />
           {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
         </div>
-
-        {serverError && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
-            <p>{serverError}</p>
-          </div>
-        )}
-
         <button
           type="submit"
           disabled={isSubmitting}
@@ -157,7 +149,6 @@ const SignupPage = () => {
           {isSubmitting ? 'Signing Up...' : 'Sign Up'}
         </button>
       </form>
-
       <div className="mt-6 text-center">
         <Link to="/" className="text-blue-500 hover:underline">
           &larr; Back to Home

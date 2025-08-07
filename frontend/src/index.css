@@ -43,7 +43,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #030b08;
+  color: #f3f3f3;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -66,4 +67,13 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    border: 1px solid rgba(0, 0, 0, 0.87) !important;
+    box-shadow: 0 0 0 30px #f3f3f3 inset !important;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
 }

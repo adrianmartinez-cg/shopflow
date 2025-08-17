@@ -48,7 +48,7 @@ const SignupPage = () => {
         },
       };
 
-      const response = await fetch(`${API_URL}/api/register`, {
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,9 @@ const SignupPage = () => {
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
         </div>
         <div>
-          <label className="block font-medium">Confirm Password</label>
+          <label className="block font-medium">
+            Confirm Password
+          </label>
           <Controller
             name="confirmPassword"
             control={control}
@@ -151,7 +153,7 @@ const SignupPage = () => {
       </form>
       <div className="mt-6 text-center">
         <Link to="/" className="text-blue-500 hover:underline">
-          &larr; Back to Home
+          Back to Home
         </Link>
       </div>
     </div>

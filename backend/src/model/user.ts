@@ -5,7 +5,7 @@ export class User extends Model {
   public id!: number;
   public name!: string;
   public email!: string;
-  public hashed_password!: string;
+  public hashedPassword!: string;
   public role!: 'user' | 'admin';
 }
 

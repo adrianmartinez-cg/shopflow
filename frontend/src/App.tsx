@@ -1,10 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import HomePage from './pages/HomePage';
+import InitialPage from './pages/InitialPage';
 import SignupPage from './pages/auth/SignupPage';
 import './App.css';
+import HomePage from './pages/user/HomePage';
+import LoginPage from './pages/auth/LoginPage';
+import PrivateRoute from './components/auth/PrivateRoute';
 
-function App() {
+export const App = () => {
   return (
     <div>
       <Toaster 
@@ -14,12 +17,14 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<InitialPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/home" element={<HomePage />} />
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="*" element={<h1>404: Page Not Found</h1>} />
       </Routes>
     </div>
   );
 }
-
-export default App;

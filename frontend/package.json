@@ -12,6 +12,8 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
     "@tailwindcss/vite": "^4.1.11",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.62.0",

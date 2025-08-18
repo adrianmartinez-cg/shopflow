@@ -3,7 +3,7 @@ import UserService from '../service/user';
 import { z } from 'zod';
 
 const signupSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().nonempty(),
   email: z.email(),
   password: z.string().min(8),
 });

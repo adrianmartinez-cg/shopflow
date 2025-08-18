@@ -6,6 +6,7 @@ import './App.css';
 import HomePage from './pages/user/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import PrivateRoute from './components/auth/PrivateRoute';
+import CreateProductPage from './pages/user/product/CreateProductPage';
 
 export const App = () => {
   return (
@@ -20,6 +21,7 @@ export const App = () => {
         <Route path="/" element={<InitialPage />} />
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<HomePage />} />
+          <Route path="/create-product" element={<CreateProductPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

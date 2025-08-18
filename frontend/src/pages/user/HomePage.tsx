@@ -21,6 +21,11 @@ const HomePage = () => {
         },
       ],
     },
+    {
+      label: 'Create Ad',
+      icon: 'pi pi-plus',
+      command: () => navigate('/create-product'),
+  },
   ];
 
   const start = <h2 className="text-xl font-bold">Shopflow 🛍️</h2>;

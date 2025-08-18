@@ -2,6 +2,11 @@ import express from 'express';
 import { sequelize } from './config/sequelize';
 import routes from './routes';
 import cors from 'cors';
+import './model/user';
+import './model/product';
+import './model/productComment';
+import './model/productReview';
+import './model/productImage';
 
 const app = express();
 const PORT = 3000;
@@ -22,7 +27,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ force: true, logging: console.log })
   .then(() => {
     console.log('Banco sincronizado com Sequelize');
   })

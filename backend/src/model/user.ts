@@ -1,8 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/sequelize';
+import { v7 as uuidv7 } from 'uuid';
 
 export class User extends Model {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public email!: string;
   public hashedPassword!: string;
@@ -12,8 +13,8 @@ export class User extends Model {
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: () => uuidv7(),
       primaryKey: true,
     },
     name: {

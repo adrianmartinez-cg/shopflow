@@ -12,8 +12,6 @@ class UserService {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        console.log(`User: ${name},${email},${hashedPassword}`)
         const newUser = await User.create({
             name,
             email,

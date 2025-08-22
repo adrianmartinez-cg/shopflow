@@ -6,8 +6,8 @@ import { User } from './user';
 
 export class ProductReview extends Model {
   public id!: string;
-  public rating!: number;
-  public comment!: string;
+  public rating?: number;
+  public comment?: string;
   public userId!: string;
   public productId!: string;
 }
@@ -20,7 +20,7 @@ ProductReview.init({
   },
   rating: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     validate: {
       min: 1,
       max: 5,
@@ -43,6 +43,13 @@ ProductReview.init({
 }, {
   sequelize,
   tableName: 'product_reviews',
+  validate: {
+    ratingOrCommentRequired() {
+      if (this.rating == null && this.comment == null) {
+        throw new Error('Rating or comment were not provided');
+      }
+    }
+  }
 });
 
 Product.hasMany(ProductReview, { foreignKey: 'product_id', as: 'productReviews' });

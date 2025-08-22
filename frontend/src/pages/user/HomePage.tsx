@@ -28,16 +28,14 @@ const HomePage = () => {
   },
   ];
 
-  const start = <h2 className="text-xl font-bold">Shopflow 🛍️</h2>;
+  const start = <h2 className="text-xl font-bold">Shopflow</h2>;
 
   return (
-    <div className="p-8 text-center min-h-screen">
-      <div className="flex flex-col">
-        <nav className="mb-6">
-          <Menubar model={items} start={start} />
-        </nav>
-        <h1 className="text-3xl font-bold">Welcome to Shopflow 🛍️</h1>
-      </div>
+    <div className="p-8 text-center min-h-screen min-w-screen flex flex-col">
+      <nav className="mb-6 w-full">
+        <Menubar model={items} start={start} />
+      </nav>
+      <h1 className="font-bold text-2xl">Welcome to Shopflow </h1>    
     </div>
   );
 };

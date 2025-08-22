@@ -5,7 +5,9 @@ import { v7 as uuidv7 } from 'uuid';
 export class Product extends Model {
   public id!: string;
   public name!: string;
-  public description!: string;
+  public description?: string;
+  public price!: string;
+  public tags?: string;
 }
 
 Product.init({
@@ -23,11 +25,15 @@ Product.init({
     allowNull: true,
   },
   price: {
-    type: DataTypes.DECIMAL(13,4),
+    type: DataTypes.DECIMAL(13, 4),
     allowNull: false,
     validate: {
       min: 0,
     },
+  },
+  tags: {
+    type: DataTypes.TEXT,
+    allowNull: true,
   }
 }, {
   sequelize,

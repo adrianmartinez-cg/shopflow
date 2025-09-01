@@ -2,11 +2,6 @@ import express from 'express';
 import { sequelize } from './config/sequelize';
 import routes from './routes';
 import cors from 'cors';
-import './model/user';
-import './model/product';
-import './model/productComment';
-import './model/productReview';
-import './model/productImage';
 import path from 'path';
 import uploadRoutes from './routes/upload';
 
@@ -33,11 +28,3 @@ app.use('/api', routes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-sequelize.sync({ alter: true, logging: console.log })
-  .then(() => {
-    console.log('Database synchronized with sequelize');
-  })
-  .catch((err) => {
-    console.error('Error while synchronizing with sequelize:', err);
-  });

@@ -1,6 +1,6 @@
 import { sequelize } from '../config/sequelize';
-import { Product } from '../model/product';
-import { ProductImage } from '../model/productImage';
+import { Product } from '../models/product';
+import { ProductImage } from '../models/productImage';
 import fs from 'fs/promises';
 import { DEFAULT_HOST } from '../server';
 

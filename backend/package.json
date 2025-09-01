@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^9.9.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
@@ -30,6 +32,8 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.3.0",
     "@types/sequelize": "^4.28.20",
+    "sequelize-cli": "^6.6.3",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   }

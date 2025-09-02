@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { AuthService } from '../service/auth';
+import type { Request, Response, NextFunction } from 'express';
+import { AuthService } from '../service/auth.js';
 
 export class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ export class AuthController {
     const authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({ error: 'Missing token' });
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1] ?? '';
     const decoded = AuthService.verifyToken(token);
 
     if (!decoded) {

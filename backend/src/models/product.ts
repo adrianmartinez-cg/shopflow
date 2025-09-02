@@ -1,5 +1,5 @@
 // models/product.ts
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Model, type ModelStatic, Sequelize } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
 export class Product extends Model {
@@ -8,7 +8,23 @@ export class Product extends Model {
   public description?: string;
   public price!: string;
   public tags?: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+
+  public static associate(models: { [key: string]: ModelStatic<Model> }) {
+    this.hasMany(models.ProductImage!, {
+      foreignKey: 'productId',
+      as: 'images',
+    });
+
+    this.hasMany(models.ProductReview!, {
+      foreignKey: 'productId',
+      as: 'reviews',
+    });
+  }
 }
+
+
 
 export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
   Product.init({
@@ -35,7 +51,17 @@ export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
     tags: {
       type: dataTypes.TEXT,
       allowNull: true,
-    }
+    },
+    createdAt: {
+      type: dataTypes.DATE,
+      allowNull: false,
+      field: 'created_at',
+    },
+    updatedAt: {
+      type: dataTypes.DATE,
+      allowNull: false,
+      field: 'updated_at',
+    },
   }, {
     sequelize,
     tableName: 'products',

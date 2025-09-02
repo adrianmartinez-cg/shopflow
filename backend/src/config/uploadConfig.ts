@@ -1,8 +1,12 @@
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
-import { Request, Response, NextFunction } from 'express';
-import { INTERNAL_SERVER_ERROR } from '../constants/globals';
+import type { Request, Response, NextFunction } from 'express';
+import { INTERNAL_SERVER_ERROR } from '../constants/globals.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
     destination: path.resolve(__dirname, '..', 'uploads'),

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import UserService from '../service/user';
+import type { Request, Response } from 'express';
+import UserService from '../service/user.js';
 import { z } from 'zod';
-import { INTERNAL_SERVER_ERROR } from '../constants/globals';
+import { INTERNAL_SERVER_ERROR } from '../constants/globals.js';
 
 const signupSchema = z.object({
   name: z.string().nonempty(),

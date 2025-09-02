@@ -1,14 +1,16 @@
-import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, type ModelStatic } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
 export class ProductImage extends Model {
   public id!: string;
   public url!: string;
   public productId!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 
-  public static associate(models: { [key: string]: ModelCtor<Model> }) {
-    this.belongsTo(models.Product, {
-      foreignKey: 'product_id',
+  public static associate(models: { [key: string]: ModelStatic<Model> }) {
+    this.belongsTo(models.Product!, {
+      foreignKey: 'productId',
       as: 'product'
     });
   }
@@ -33,6 +35,16 @@ export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
         model: 'products',
         key: 'id',
       }
+    },
+    createdAt: {
+      type: dataTypes.DATE,
+      allowNull: false,
+      field: 'created_at',
+    },
+    updatedAt: {
+      type: dataTypes.DATE,
+      allowNull: false,
+      field: 'updated_at',
     },
   }, {
     sequelize,

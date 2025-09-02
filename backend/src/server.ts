@@ -1,10 +1,12 @@
 import express from 'express';
-import { sequelize } from './config/sequelize';
-import routes from './routes';
+import routes from './routes/index.js';
 import cors from 'cors';
 import path from 'path';
-import uploadRoutes from './routes/upload';
+import uploadRoutes from './routes/upload.js';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const DEFAULT_PORT = 3000;
 export const DEFAULT_HOST = "http://localhost:3000"

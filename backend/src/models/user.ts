@@ -1,4 +1,4 @@
-import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, type ModelStatic } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 import bcrypt from 'bcrypt';
 
@@ -8,10 +8,12 @@ export class User extends Model {
   public email!: string;
   public hashedPassword!: string;
   public role!: 'user' | 'admin';
+  public createdAt!: Date;
+  public updatedAt!: Date;
 
-  public static associate(models: { [key: string]: ModelCtor<Model> }) {
-    this.hasMany(models.ProductReview, {
-      foreignKey: 'user_id',
+  public static associate(models: { [key: string]: ModelStatic<Model> }) {
+    this.hasMany(models.ProductReview!, {
+      foreignKey: 'userId',
       as: 'reviews',
     });
   }
@@ -50,6 +52,16 @@ export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
         type: dataTypes.ENUM('user', 'admin'),
         allowNull: false,
         defaultValue: 'user',
+      },
+      createdAt: {
+        type: dataTypes.DATE,
+        allowNull: false,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: dataTypes.DATE,
+        allowNull: false,
+        field: 'updated_at',
       },
     },
     {

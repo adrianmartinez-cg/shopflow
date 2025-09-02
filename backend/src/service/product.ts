@@ -1,12 +1,17 @@
-import { sequelize } from '../config/sequelize';
-import { Product } from '../models/product';
-import { ProductImage } from '../models/productImage';
+import { sequelize } from '../config/sequelize.js';
 import fs from 'fs/promises';
-import { DEFAULT_HOST } from '../server';
+import { DEFAULT_HOST } from '../server.js';
+import db from '../models/index.js';
+
+import { Product } from '../models/product.js';
+import { ProductImage } from '../models/productImage.js';
+import { ProductReview } from '../models/productReview.js';
+
+const { Product: ProductModel, ProductImage: ProductImageModel, ProductReview: ProductReviewModel } = db;
 
 class ProductService {
     static getProducts = async (): Promise<Product[]> => {
-        return await Product.findAll();
+        return await ProductModel.findAll();
     };
     static registerProduct = async (
         name: string,
@@ -16,7 +21,7 @@ class ProductService {
     ) => {
         const transaction = await sequelize.transaction();
         try {
-            const product = await Product.create(
+            const product = await ProductModel.create(
                 { name, description, price },
                 { transaction }
             );
@@ -27,7 +32,7 @@ class ProductService {
                 images = await Promise.all(
                     imageFiles.map(async (file) => {
                         const imageUrl = `${process.env.SERVER_HOST ?? DEFAULT_HOST}/uploads/${file.filename}`;
-                        return await ProductImage.create(
+                        return await ProductImageModel.create(
                             { url: imageUrl, productId: product.id },
                             { transaction }
                         );
@@ -45,6 +50,25 @@ class ProductService {
             throw error;
         }
     }
+    static getProductById = async (id: string): Promise<Product | null> => {
+        console.log("id> ", id);
+        console.log('Modelo ProductImage:', ProductImage);
+        console.log('Modelo ProductReview:', ProductReview);
+        console.log("Associações do Modelo Product:", Product.associations);
+        const product = await Product.findByPk(id, {
+            include: [
+                {
+                    model: ProductImage,
+                    as: 'images',
+                },
+                {
+                    model: ProductReview,
+                    as: 'reviews',
+                }
+            ]
+        });
+        return product;
+    };
 }
 
 export default ProductService;

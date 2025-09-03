@@ -1,7 +1,10 @@
-import type { Request, Response } from 'express';
-import { z } from 'zod';
-import ProductService from '../service/product.js';
-import { BAD_REQUEST_ERROR, INTERNAL_SERVER_ERROR } from '../constants/globals.js';
+import type { Request, Response } from "express";
+import { z } from "zod";
+import ProductService from "../service/product.js";
+import {
+  BAD_REQUEST_ERROR,
+  INTERNAL_SERVER_ERROR,
+} from "../constants/globals.js";
 
 export const productSchema = z.object({
   name: z.string().nonempty(),
@@ -12,7 +15,7 @@ export const productSchema = z.object({
 class ProductController {
   static getProducts = async (req: Request, res: Response) => {
     try {
-      const products = await ProductService.getProducts()
+      const products = await ProductService.getProducts();
       return res.json(products);
     } catch (error) {
       return res.status(500).json({ error: INTERNAL_SERVER_ERROR });
@@ -32,18 +35,23 @@ class ProductController {
 
       const imageFiles = (req.files as Express.Multer.File[]) || [];
       const { name, description, price } = parsed.data;
-      const result = await ProductService.registerProduct(name, price, description, imageFiles)
+      const result = await ProductService.registerProduct(
+        name,
+        price,
+        description,
+        imageFiles,
+      );
 
       return res.status(201).json(result);
     } catch (error: any) {
-      console.error('Error while registering product:', error);
+      console.error("Error while registering product:", error);
       return res.status(500).json({ error: INTERNAL_SERVER_ERROR });
     }
   };
   static getProductById = async (req: Request, res: Response) => {
     try {
       if (!req.params?.id) {
-        throw new Error('ID not provided')
+        throw new Error("ID not provided");
       }
       const { id } = req.params;
       const uuidSchema = z.uuid({ message: "Invalid product ID format." });
@@ -55,15 +63,14 @@ class ProductController {
       const product = await ProductService.getProductById(id);
 
       if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: "Product not found" });
       }
       return res.json(product);
     } catch (error) {
-      console.error('Error fetching product by ID:', error);
+      console.error("Error fetching product by ID:", error);
       return res.status(500).json({ error: INTERNAL_SERVER_ERROR });
     }
   };
-
 }
 
 export default ProductController;

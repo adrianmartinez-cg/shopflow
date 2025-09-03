@@ -1,26 +1,30 @@
-import { User } from '../models/user.js';
-import bcrypt from 'bcrypt';
+import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
 
 class UserService {
-    static getUsers = async (): Promise<User[]> => {
-        return await User.findAll();
-    };
-    static registerUser = async (name: string, email: string, password: string) => {
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            throw new Error('Email already in use');
-        }
+  static getUsers = async (): Promise<User[]> => {
+    return await User.findAll();
+  };
+  static registerUser = async (
+    name: string,
+    email: string,
+    password: string,
+  ) => {
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error("Email already in use");
+    }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({
-            name,
-            email,
-            hashedPassword,
-            role: 'user',
-        });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      name,
+      email,
+      hashedPassword,
+      role: "user",
+    });
 
-        return newUser;
-    };
+    return newUser;
+  };
 }
 
 export default UserService;

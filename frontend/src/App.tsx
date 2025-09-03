@@ -7,6 +7,7 @@ import HomePage from './pages/user/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import PrivateRoute from './components/auth/PrivateRoute';
 import CreateProductPage from './pages/user/product/CreateProductPage';
+import ProductPage from './pages/user/product/ProductPage';
 
 export const App = () => {
   return (
@@ -22,6 +23,7 @@ export const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<HomePage />} />
           <Route path="/create-product" element={<CreateProductPage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

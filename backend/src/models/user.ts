@@ -1,20 +1,20 @@
-import { DataTypes, Model, Sequelize, type ModelStatic } from 'sequelize';
-import { v7 as uuidv7 } from 'uuid';
-import bcrypt from 'bcrypt';
+import { DataTypes, Model, Sequelize, type ModelStatic } from "sequelize";
+import { v7 as uuidv7 } from "uuid";
+import bcrypt from "bcrypt";
 
 export class User extends Model {
   public id!: string;
   public name!: string;
   public email!: string;
   public hashedPassword!: string;
-  public role!: 'user' | 'admin';
+  public role!: "user" | "admin";
   public createdAt!: Date;
   public updatedAt!: Date;
 
   public static associate(models: { [key: string]: ModelStatic<Model> }) {
     this.hasMany(models.ProductReview!, {
-      foreignKey: 'userId',
-      as: 'reviews',
+      foreignKey: "userId",
+      as: "reviews",
     });
   }
 
@@ -46,27 +46,27 @@ export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
       hashedPassword: {
         type: dataTypes.STRING(255),
         allowNull: false,
-        field: 'hashed_password',
+        field: "hashed_password",
       },
       role: {
-        type: dataTypes.ENUM('user', 'admin'),
+        type: dataTypes.ENUM("user", "admin"),
         allowNull: false,
-        defaultValue: 'user',
+        defaultValue: "user",
       },
       createdAt: {
         type: dataTypes.DATE,
         allowNull: false,
-        field: 'created_at',
+        field: "created_at",
       },
       updatedAt: {
         type: dataTypes.DATE,
         allowNull: false,
-        field: 'updated_at',
+        field: "updated_at",
       },
     },
     {
       sequelize,
-      tableName: 'users',
+      tableName: "users",
       timestamps: true,
       hooks: {
         beforeCreate: async (user: User) => {
@@ -74,13 +74,13 @@ export default (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
           user.hashedPassword = await bcrypt.hash(user.hashedPassword, salt);
         },
         beforeUpdate: async (user: User) => {
-          if (user.changed('hashedPassword')) {
+          if (user.changed("hashedPassword")) {
             const salt = await bcrypt.genSalt(10);
             user.hashedPassword = await bcrypt.hash(user.hashedPassword, salt);
           }
         },
       },
-    }
+    },
   );
 
   return User;

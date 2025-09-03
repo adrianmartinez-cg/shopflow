@@ -1,21 +1,23 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { User } from '../models/user.js';
-import dotenv from 'dotenv';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { User } from "../models/user.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 export class AuthService {
   static async authenticate(email: string, password: string) {
     const user = await User.findOne({ where: { email } });
     if (!user) return null;
-
-    const isValid = await bcrypt.compare(password, user.hashedPassword);
+    const isValid = await bcrypt.compare(
+      password,
+      user.getDataValue("hashedPassword"),
+    );
     if (!isValid) return null;
 
     const token = jwt.sign(
       { id: user.id, role: user.role },
-      process.env.JWT_SECRET ?? '',
-      { expiresIn: '1h' }
+      process.env.JWT_SECRET ?? "",
+      { expiresIn: "1h" },
     );
 
     return token;
@@ -23,7 +25,7 @@ export class AuthService {
 
   static verifyToken(token: string) {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET ?? '');
+      return jwt.verify(token, process.env.JWT_SECRET ?? "");
     } catch {
       return null;
     }

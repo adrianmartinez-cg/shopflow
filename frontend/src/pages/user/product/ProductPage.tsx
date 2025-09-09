@@ -1,118 +1,134 @@
-import { useState, useEffect } from 'react';
-import { Card } from 'primereact/card';
-import { Galleria } from 'primereact/galleria';
-import { API_URL } from '../../../constants/globals';
-import { SERVER_ERROR_MSG } from '../../../constants/errors';
-import { useParams } from 'react-router-dom';
-
-interface ProductImage {
-    id: string;
-    url: string;
-    productId: string;
-    createdAt: string;
-    updatedAt: string;
-}
-
-interface ProductReview {
-    id: string;
-    rating: number;
-    comment: string;
-    userId: string;
-    productId: string;
-    createdAt: string;
-    updatedAt: string;
-}
-
-interface Product {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    tags: string;
-    createdAt: string;
-    updatedAt: string;
-    images: ProductImage[];
-    reviews: ProductReview[];
-}
+import { useState, useEffect } from "react";
+import { Galleria } from "primereact/galleria";
+import { API_URL } from "../../../constants/globals";
+import { SERVER_ERROR_MSG } from "../../../constants/errors";
+import { useParams } from "react-router-dom";
+import type { Product } from "../../../model/product";
+import TagsChips from "./components/TagsChips";
+import ProductReviewCard from "./components/ProductReviewCard";
 
 const ProductPage = () => {
-    const { id } = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+  const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-    const fetchProduct = async () => {
-        try {
-            const response = await fetch(`${API_URL}/product/${id}`);
-            if (!response.ok) {
-                throw new Error('Error while searching for product');
-            }
-            const data: Product = await response.json();
-            const productData = {
-                ...data,
-                price: Number(data.price),
-            };
-        
-            setProduct(productData);
-        } catch (error) {
-            console.error(SERVER_ERROR_MSG);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch(`${API_URL}/product/${id}`);
+      if (!response.ok) {
+        throw new Error("Error while searching for product");
+      }
+      const data: Product = await response.json();
+      const productData = {
+        ...data,
+        price: Number(data.price),
+      };
 
-    useEffect(() => {
-        fetchProduct();
-    }, [id]);
-
-    if (loading) {
-        return <div>Loading product...</div>;
+      setProduct(productData);
+    } catch (error) {
+      console.error(SERVER_ERROR_MSG);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (!product) {
-        return <div>Product not found.</div>;
-    }
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
 
-    const itemTemplate = (item: ProductImage) => {
-        return <img src={item.url} alt={product.name} style={{ width: '100%', display: 'block' }} />;
-    };
+  if (loading) {
+    return <div>Loading product...</div>;
+  }
 
-    const thumbnailTemplate = (item: ProductImage) => {
-        return <img src={item.url} alt={product.name} style={{ width: '100%', display: 'block' }} />;
-    };
+  if (!product) {
+    return <div>Product not found.</div>;
+  }
 
-    return (
-        <div className="p-grid p-justify-center p-mt-5">
-            <div className="p-col-12 p-md-8">
-                <Card title={product.name} className="p-shadow-3">
-                    <div className="p-d-flex p-flex-column p-md-flex-row">
-                        <div className="p-mb-3 p-md-mb-0 p-md-mr-3">
-                            <Galleria
-                                value={product.images}
-                                numVisible={5}
-                                circular
-                                showItemNavigators
-                                showThumbnails
-                                item={itemTemplate}
-                                thumbnail={thumbnailTemplate}
-                                style={{ maxWidth: '640px' }}
-                            />
-                        </div>
-                        <div className="p-flex-grow-1">
-                            <h3>Description</h3>
-                            <p>{product.description}</p>
-                            <h3>Price</h3>
-                            <p>R$ {product.price.toFixed(2)}</p>
-                            <h3>Tags</h3>
-                            <p>{product.tags}</p>
-                            <h3>Dates</h3>
-                            <p>Created at: {new Date(product.createdAt).toLocaleDateString()}</p>
-                            <p>Updated at: {new Date(product.updatedAt).toLocaleDateString()}</p>
-                        </div>
-                    </div>
-                </Card>
+  return (
+    <div className="flex-flex-col w-screen justify-center items-center">
+      <div className="w-full p-8 h-[800px]">
+        <div className="flex flex-row justify-between items-start h-full gap-x-8">
+          <div className="flex flex-col justify-start items-start gap-y-8 h-full rounded-lg p-2 border border-solid border-slate-800">
+            <div className="flex flex-col gap-y-3 items-start bg-gray-100 rounded-lg grow">
+              <h2 className="font-black">{product.name}</h2>
+              <div className="bg-white grow rounded-lg">
+                <p className="text-start">{product.description}</p>
+              </div>
             </div>
+            <div className="flex flex-col gap-y-3 items-start">
+              <h3 className="font-black">Price</h3>
+              <p className="text-start">R$ {product.price.toFixed(2)}</p>
+            </div>
+            {product.tags && (
+              <div className="flex flex-col gap-y-3 items-start">
+                <h3 className="font-black">Tags</h3>
+                <TagsChips tags={product.tags} />
+              </div>
+            )}
+            <div className="flex flex-col gap-y-3 items-start">
+              <p>
+                <strong>Published in:</strong>{" "}
+                {new Date(product.createdAt).toLocaleDateString()}
+              </p>
+              <p>
+                <strong>Last update: </strong>{" "}
+                {new Date(product.updatedAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+          <Galleria
+            className="p-lara-dark-teal"
+            value={product.images}
+            numVisible={5}
+            circular
+            showItemNavigators
+            itemNextIcon={
+              <i className="pi pi-angle-right" style={{ color: "black" }}></i>
+            }
+            itemPrevIcon={
+              <i className="pi pi-angle-left" style={{ color: "black" }}></i>
+            }
+            item={(item) => (
+              <img
+                src={item.url}
+                alt={product.name}
+                className="w-full block h-[500px]"
+              />
+            )}
+            thumbnail={(item) => (
+              <img
+                src={item.url}
+                alt={product.name}
+                className="w-[300px] block h-[200px]"
+              />
+            )}
+            style={{ width: "640px", height: "640px" }}
+          />
         </div>
-    );
+      </div>
+      {product?.reviews && product?.reviews.length > 0 ? (
+        <div className="mt-8 w-full p-8">
+          <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+          <div className="flex flex-col gap-4 items-center">
+            {product.reviews.map((review) => (
+              <ProductReviewCard
+                key={review.id}
+                id={review.id}
+                rating={review.rating}
+                comment={review.comment}
+                user={review.user}
+                createdAt={review.createdAt}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="mt-8">
+          <p className="text-lg text-gray-500">No reviews yet.</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ProductPage;

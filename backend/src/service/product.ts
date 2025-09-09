@@ -6,6 +6,7 @@ import db from "../models/index.js";
 import { Product } from "../models/product.js";
 import { ProductImage } from "../models/productImage.js";
 import { ProductReview } from "../models/productReview.js";
+import { User } from "../models/user.js";
 
 const {
   Product: ProductModel,
@@ -55,10 +56,6 @@ class ProductService {
     }
   };
   static getProductById = async (id: string): Promise<Product | null> => {
-    console.log("id> ", id);
-    console.log("Modelo ProductImage:", ProductImage);
-    console.log("Modelo ProductReview:", ProductReview);
-    console.log("Associações do Modelo Product:", Product.associations);
     const product = await Product.findByPk(id, {
       include: [
         {
@@ -68,6 +65,13 @@ class ProductService {
         {
           model: ProductReview,
           as: "reviews",
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "name", "email"],
+            },
+          ],
         },
       ],
     });

@@ -47,11 +47,11 @@ const ProductPage = () => {
   return (
     <div className="flex-flex-col w-screen justify-center items-center">
       <div className="w-full p-8 h-[800px]">
-        <div className="flex flex-row justify-between items-start h-full gap-x-8">
-          <div className="flex flex-col justify-start items-start gap-y-8 h-full rounded-lg p-2 border border-solid border-slate-800">
-            <div className="flex flex-col gap-y-3 items-start bg-gray-100 rounded-lg grow">
+        <div className="flex flex-row justify-between items-start h-full w-full gap-x-8">
+          <div className="flex flex-col justify-start items-start gap-y-8 w-1/2 h-full rounded-lg p-2 border border-solid border-slate-800 shadow-md bg-white">
+            <div className="flex flex-col gap-y-3 items-start rounded-lg grow w-full">
               <h2 className="font-black">{product.name}</h2>
-              <div className="bg-white grow rounded-lg">
+              <div className="bg-gray-100 grow rounded-lg p-5 w-full">
                 <p className="text-start">{product.description}</p>
               </div>
             </div>
@@ -77,7 +77,7 @@ const ProductPage = () => {
             </div>
           </div>
           <Galleria
-            className="p-lara-dark-teal"
+            className="p-lara-dark-teal w-1/2"
             value={product.images}
             numVisible={5}
             circular

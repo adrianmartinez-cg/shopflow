@@ -16,7 +16,25 @@ const {
 
 class ProductService {
   static getProducts = async (): Promise<Product[]> => {
-    return await ProductModel.findAll();
+    return await ProductModel.findAll({
+      include: [
+        {
+          model: ProductImage,
+          as: "images",
+        },
+        {
+          model: ProductReview,
+          as: "reviews",
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "name", "email"],
+            },
+          ],
+        },
+      ],
+    });
   };
   static registerProduct = async (
     name: string,

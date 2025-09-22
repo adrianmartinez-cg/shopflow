@@ -9,5 +9,6 @@ router.get("/users", UserController.getUsers);
 router.post("/register", UserController.registerUser);
 router.post("/login", AuthController.login);
 router.get("/product/:id", ProductController.getProductById);
+router.get("/products", ProductController.getProducts)
 
 export default router;

@@ -26,7 +26,11 @@ const ProductReviewCard = ({
   );
 
   return (
-    <Card header={cardHeader} className="w-full shadow-md rounded-lg p-3 my-4">
+    <Card
+      header={cardHeader}
+      className="w-full shadow-md rounded-lg p-3 my-4"
+      style={{ backgroundColor: "#ffffff", color: "#000000" }}
+    >
       <p className="m-0 text-start">{comment}</p>
       <div className="flex justify-end mt-2">
         <small className="text-gray-500">

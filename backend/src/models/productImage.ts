@@ -2,12 +2,6 @@ import { DataTypes, Model, Sequelize, type ModelStatic } from "sequelize";
 import { v7 as uuidv7 } from "uuid";
 
 export class ProductImage extends Model {
-  public id!: string;
-  public url!: string;
-  public productId!: string;
-  public createdAt!: Date;
-  public updatedAt!: Date;
-
   public static associate(models: { [key: string]: ModelStatic<Model> }) {
     this.belongsTo(models.Product!, {
       foreignKey: "productId",
